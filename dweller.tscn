@@ -1,0 +1,49 @@
+[gd_scene load_steps=6 format=3 uid="uid://bwvnbve6j8wj8"]
+
+[ext_resource type="Script" uid="uid://dxrr1uibdwm1t" path="res://dweller.gd" id="1_0bva0"]
+[ext_resource type="Texture2D" uid="uid://6m13p3qub0as" path="res://icon.svg" id="2_mhrwb"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_0bva0"]
+rough = true
+bounce = 0.25
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_62ft2"]
+radius = 0.2
+
+[sub_resource type="SphereMesh" id="SphereMesh_0bva0"]
+
+[node name="Dweller" type="RigidBody3D"]
+collision_layer = 2
+collision_mask = 2
+physics_material_override = SubResource("PhysicsMaterial_0bva0")
+continuous_cd = true
+contact_monitor = true
+max_contacts_reported = 3
+angular_damp = 5.0
+script = ExtResource("1_0bva0")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_62ft2")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0, 0)
+visible = false
+mesh = SubResource("SphereMesh_0bva0")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0)
+billboard = 1
+texture_filter = 0
+texture = ExtResource("2_mhrwb")
+
+[node name="RopeTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="Ouch" type="Sprite2D" parent="."]
+position = Vector2(0.884124, 0.418829)
+scale = Vector2(1.195, 0.474)
+texture = ExtResource("2_mhrwb")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="RopeTimer" to="." method="_on_rope_timer_timeout"]
